@@ -1,7 +1,24 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
+
 app.use(express.json())
+
+
+morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
+
+app.use(morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      tokens.body(req, res),
+    ].join(' ')
+  }))
+
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
@@ -38,6 +55,43 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+const generateId = () => {
+    const maxId = persons.length > 0
+      ? Math.max(...persons.map(n => n.id))
+      : 0
+    return maxId + 1
+  }
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    }
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'number missing'
+        })
+    }
+    for (let i = 0; i < persons.length; i++) {
+        if (persons[i].name === body.name) {
+            return response.status(400).json({
+                error: 'name already added'
+            })
+        }
+    }
+    
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId(),
+      }
+    
+      persons = persons.concat(person)
+      response.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
@@ -65,9 +119,3 @@ let persons = [
         number: "39-23-6423122"
     }
 ]
-
-let info = 
-    {
-        date: new Date(),
-        length: persons.length
-    }
