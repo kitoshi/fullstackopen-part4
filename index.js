@@ -50,8 +50,8 @@ app.get('/api/persons/:id', (request, response, next) => {
     })
 
 app.get('/info', (request, response) => {
+    Person.find({}).then(persons => {
     const date = new Date()
-    console.log(date)
     const length = persons.length
     response.write('<h1>Phonebook has info for ')
     response.write(JSON.stringify(length))
@@ -60,6 +60,7 @@ app.get('/info', (request, response) => {
     response.write(JSON.stringify(date))
     response.write('</h2>')
     response.end()
+    })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
