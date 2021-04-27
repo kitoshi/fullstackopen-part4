@@ -7,14 +7,9 @@ client.connect(err => {
   client.close();
 });
 
-const mongoose = require('mongoose')
-
-if (process.argv.length < 3) {
-  console.log('Please provide the password as an argument: node mongo.js <password>')
-  process.exit(1)
-}
-
 const password = process.argv[2]
+
+const mongoose = require('mongoose')
 
 const url =
   `mongodb+srv://fullstack:${password}@cluster0.4qsoy.mongodb.net/person-app?retryWrites=true&w=majority`
@@ -22,7 +17,6 @@ const url =
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
 const personSchema = new mongoose.Schema({
-  id: Number,
   name: String,
   number: String,
 })
@@ -34,6 +28,12 @@ const persons = new Person({
     name: process.argv[3],
     number: process.argv[4]
 })
+
+if (process.argv.length < 3) {
+  console.log('Please provide the password as an argument: node mongo.js <password>')
+  process.exit(1)
+}
+
 
 if (process.argv.length > 3) {
   persons.save().then(result => {
