@@ -143,12 +143,12 @@ const errorHandler = (error, request, response, next) => {
     } else if (error.name === 'ValidationError') {
         return response.status(400).json({ error: error.message })
     }
-    next(error)
+    else console.log(error)
   }
   
   // this has to be the last loaded middleware.
 
-  app.use(errorHandler)
+app.use(errorHandler)
 
 
 app.listen(PORT, () => {
