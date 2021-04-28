@@ -7,6 +7,12 @@ const morgan = require('morgan')
 const Person = require('./models/person')
 const PORT = process.env.PORT
 
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
 
 /*
 app.use(express.json())
