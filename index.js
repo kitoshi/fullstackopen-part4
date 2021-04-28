@@ -35,6 +35,7 @@ app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
     response.json(persons)
 })
+.catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
