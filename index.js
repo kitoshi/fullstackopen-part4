@@ -2,11 +2,12 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
+app.use(cors())
 const morgan = require('morgan')
 const Person = require('./models/person')
 const PORT = process.env.PORT
 
-app.use(cors())
+
 /*
 app.use(express.json())
 */
