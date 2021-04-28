@@ -8,6 +8,8 @@ const morgan = require('morgan')
 const Person = require('./models/person')
 const PORT = process.env.PORT
 
+const uri = process.env.MONGODB_URI
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const collection = client.db("test").collection("devices");
@@ -15,9 +17,8 @@ client.connect(err => {
   client.close();
 });
 
-/*
+
 app.use(express.json())
-*/
 
 /*
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
