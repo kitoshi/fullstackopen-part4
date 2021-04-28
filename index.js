@@ -4,7 +4,7 @@ const cors = require('cors')
 const app = express()
 const morgan = require('morgan')
 const Person = require('./models/person')
-
+const PORT = process.env.PORT
 
 app.use(cors())
 /*
@@ -34,6 +34,7 @@ app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
     response.json(persons)
 })
+  .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -148,7 +149,7 @@ const errorHandler = (error, request, response, next) => {
 
   app.use(errorHandler)
 
-  const PORT = process.env.PORT
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
