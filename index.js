@@ -1,26 +1,14 @@
-require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
 app.use(cors())
-const MongoClient = require('mongodb').MongoClient;
 const morgan = require('morgan')
 const Person = require('./models/person')
 const PORT = process.env.PORT
 
-const uri = process.env.MONGODB_URI
-
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
-
-
 app.use(express.json())
 
-/*
+
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
 
 app.use(morgan(function (tokens, req, res) {
@@ -33,7 +21,6 @@ app.use(morgan(function (tokens, req, res) {
       tokens.body(req, res),
     ].join(' ')
   }))
-  */
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
